@@ -40,43 +40,40 @@ def set_scores(user_id:int, active_points: int, inactive_points: int):
 
 # Команда для вывода очков пользователя
 @bot.slash_command()
-async def ochki(inter, member: disnake.Member = None):
+async def points(inter, member: disnake.Member = None):
     if member is None:
         member = inter.author
     user_id = member.id
     active_points, inactive_points = get_scores(user_id)
-    embed = disnake.Embed(title=f"Очки пользователя {member.display_name}", description=f"Очки активности: {active_points}\nОчки неактивности: {inactive_points}")
+    embed = disnake.Embed(title=f"Очки пользователя {member.display_name}", description=f"active points: {active_points}\ninactive points: {inactive_points}")
     await inter.response.send_message(embed=embed)
 
 # Команда для выдачи очка активности
 @bot.slash_command()
-async def addoa(inter, member: disnake.Member):
+async def addap(inter, member: disnake.Member):
     if not inter.author.guild_permissions.manage_roles:
-        return await inter.response.send_message("Вы не можете использовать эту команду.")
+        return await inter.response.send_message("You cannot use this command.")
     user_id = member.id
     active_points, inactive_points = get_scores(user_id)
     active_points += 1
     set_scores(user_id, active_points, inactive_points)
-    await inter.response.send_message(f"1 очко активности было выдано {member.display_name}")
+    await inter.response.send_message(f"1 an activity point was given to {member.display_name}")
 
 # Команда для выдачи очка неактивности
 @bot.slash_command()
-async def addona(inter, member: disnake.Member):
+async def addiap(inter, member: disnake.Member):
     if not inter.author.guild_permissions.manage_roles:
-        return await inter.response.send_message("Вы не можете использовать эту команду.")
+        return await inter.response.send_message("You cannot use this command.")
     user_id = member.id
     active_points, inactive_points = get_scores(user_id)
     inactive_points += 1
     set_scores(user_id, active_points, inactive_points)
-    await inter.response.send_message(f"1 очко неактивности было выдано {member.display_name}")
+    await inter.response.send_message(f"an inactivity point was given to {member.display_name}")
 
-@bot.slash_command()
-async def hi(inter):
-    await inter.response.send_message("хуй пизда хуй пизда")
 
 @bot.slash_command()
 async def help(inter):
-    embed = disnake.Embed(title="Что дают очки активности:", description="в разработке...")
+    embed = disnake.Embed(title="What do activity points give:", description="in developing...")
     await inter.response.send_message(embed=embed)
 
 bot.run("YOUR BOT TOKEN")
